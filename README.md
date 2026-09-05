@@ -38,7 +38,6 @@ a healthy and active lifestyle.
 
 1. Clone this repository:
    git clone <https://github.com/patilmrunal2607-design/codeyourcult-fitness-project/new/main>
-   cd <Fitness Project>
    
 2. Install the required dependencies:
    pip install flask pandas scikit-learn joblib openpyxl
