@@ -51,6 +51,7 @@ a healthy and active lifestyle.
 4. Run the Flask app:
    python app.py
 
+5. Open your browser and go to:    http://127.0.0.1:5000/
 ## Future Scope
 
 * Expand the nutrition database to include more regional and international cuisines.
