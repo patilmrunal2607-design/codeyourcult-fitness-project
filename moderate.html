@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitPro - Moderate Plan</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+ --ink:#14251a;--muted:#65756b;--green:#5d7c62;--dark:#294b32;
+ --lime:#9bbf72;--cream:#f8fbf5;--glass:rgba(255,255,255,.82);
+}
+html{scroll-behavior:smooth}
+body{
+ min-height:100vh;font-family:"Trebuchet MS","Segoe UI",sans-serif;color:var(--ink);
+ padding:22px 14px;overflow-x:hidden;
+ background:
+ radial-gradient(circle at 15% 18%,rgba(155,191,114,.25),transparent 20%),
+ radial-gradient(circle at 87% 22%,rgba(93,124,98,.20),transparent 23%),
+ radial-gradient(circle at 70% 95%,rgba(155,191,114,.15),transparent 25%),
+ linear-gradient(135deg,#fbfdf9,#e9f2ea);
+}
+body:before{
+ content:"";position:fixed;inset:0;pointer-events:none;opacity:.32;z-index:-1;
+ background-image:radial-gradient(rgba(41,75,50,.12) 1px,transparent 1px);
+ background-size:24px 24px;
+}
+.page,.container{
+ width:min(1160px,95vw);min-height:calc(100vh - 44px);margin:auto;padding:clamp(28px,5vw,66px);
+ position:relative;overflow:hidden;border-radius:38px;
+ background:var(--glass);border:1px solid rgba(255,255,255,.95);
+ box-shadow:0 30px 90px rgba(34,65,42,.16);backdrop-filter:blur(18px);
+}
+.page:before,.container:before{
+ content:"";position:absolute;width:330px;height:330px;border-radius:50%;
+ right:-190px;top:-180px;border:65px solid rgba(93,124,98,.06);
+ box-shadow:0 0 0 35px rgba(155,191,114,.045);pointer-events:none;
+}
+.page:after,.container:after{
+ content:"FIT • MOVE • GROW";position:absolute;left:-35px;bottom:35px;
+ font-size:11px;letter-spacing:.35em;font-weight:900;color:rgba(41,75,50,.07);
+ transform:rotate(-90deg);pointer-events:none;
+}
+.top,.header{position:relative;text-align:center;z-index:2}
+.eyebrow{
+ display:inline-flex;align-items:center;gap:9px;padding:10px 18px;margin-bottom:20px;
+ border-radius:999px;background:linear-gradient(135deg,rgba(93,124,98,.13),rgba(155,191,114,.14));
+ border:1px solid rgba(93,124,98,.18);color:var(--dark);
+ font-size:.70rem;letter-spacing:.22em;font-weight:900;text-transform:uppercase;
+ box-shadow:0 8px 20px rgba(41,75,50,.06);
+}
+.eyebrow:before,.eyebrow:after{content:"✦";font-size:.7rem}
+h1,.header h1{
+ font-family:"Trebuchet MS","Segoe UI",sans-serif;font-size:clamp(2.8rem,8vw,6rem);
+ line-height:.98;letter-spacing:-.065em;font-weight:900;margin-bottom:15px;
+ background:linear-gradient(100deg,#17341f,#5d7c62 48%,#2f5638);
+ -webkit-background-clip:text;background-clip:text;color:transparent;
+ text-shadow:0 8px 30px rgba(93,124,98,.10);
+}
+.subtitle,.header p{color:var(--muted);font-size:1.08rem;line-height:1.5}
+.plans,.options{
+ display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:25px;
+ margin-top:clamp(38px,7vw,64px);position:relative;z-index:2;
+}
+.plan,.option{ text-decoration:none;
+ appearance:none;width:100%;min-height:255px;padding:34px 24px;border-radius:30px;
+ cursor:pointer;text-align:center;color:var(--ink);position:relative;overflow:hidden;
+ border:1px solid rgba(93,124,98,.15);
+ background:linear-gradient(145deg,rgba(255,255,255,.98),rgba(246,250,246,.80));
+ box-shadow:0 14px 35px rgba(35,61,41,.08);
+ transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s,border-color .35s;
+}
+.plan:before,.option:before{
+ content:"";position:absolute;width:170px;height:170px;border-radius:50%;
+ right:-85px;top:-85px;background:rgba(155,191,114,.12);transition:.45s ease;
+}
+.plan:after,.option:after{
+ content:"";position:absolute;left:-45px;bottom:-55px;width:125px;height:125px;
+ border-radius:50%;border:24px solid rgba(93,124,98,.06);transition:.45s ease;
+}
+.plan:hover,.plan:focus-visible,.option:hover,.option:focus-visible{
+ transform:translateY(-13px) scale(1.015);outline:none;
+ border-color:rgba(63,93,69,.38);box-shadow:0 30px 55px rgba(35,61,41,.16);
+}
+.plan:hover:before,.option:hover:before{transform:scale(1.7)}
+.plan:hover:after,.option:hover:after{transform:translate(12px,-8px) scale(1.1)}
+.icon{
+ width:78px;height:78px;margin:0 auto 21px;display:grid;place-items:center;
+ border-radius:25px;font-size:2.15rem;position:relative;
+ background:linear-gradient(145deg,rgba(93,124,98,.16),rgba(155,191,114,.10));
+ border:1px solid rgba(93,124,98,.16);
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 10px 22px rgba(63,93,69,.07);
+ transition:.35s ease;
+}
+.plan:hover .icon,.option:hover .icon{transform:rotate(-6deg) scale(1.12);box-shadow:0 14px 28px rgba(63,93,69,.14)}
+.plan h2,.option h2{
+ font-size:1.55rem;font-weight:900;letter-spacing:-.025em;margin-bottom:10px;position:relative;
+}
+.plan p,.option p{color:var(--muted);font-size:.97rem;line-height:1.58;position:relative}
+.plan:nth-child(1),.option:nth-child(1){border-top:5px solid #91ad79}
+.plan:nth-child(2),.option:nth-child(2){border-top:5px solid #5d7c62}
+.plan:nth-child(3),.option:nth-child(3){border-top:5px solid #355d3e}
+.back{
+ display:inline-flex;align-items:center;gap:8px;margin-top:43px;padding:14px 27px;
+ border-radius:999px;text-decoration:none;color:white;font-weight:900;
+ background:linear-gradient(135deg,#6e8d73,#355d3e);
+ box-shadow:0 13px 28px rgba(53,93,62,.25);transition:.25s ease;position:relative;z-index:3;
+}
+.back:hover{transform:translateY(-4px);box-shadow:0 18px 35px rgba(53,93,62,.30)}
+footer{
+ margin-top:35px;text-align:center;color:#758279;font-size:.83rem;
+ letter-spacing:.06em;position:relative;z-index:2;
+}
+@media(max-width:780px){
+ body{padding:10px}.page,.container{width:97vw;min-height:calc(100vh - 20px);padding:32px 17px;border-radius:28px}
+ .plans,.options{grid-template-columns:1fr;gap:16px;margin-top:34px}
+ .plan,.option{ text-decoration:none;min-height:205px;padding:28px 18px}.icon{width:68px;height:68px}
+ h1,.header h1{font-size:clamp(2.7rem,15vw,4.2rem)}
+}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{transition-duration:.01ms!important;scroll-behavior:auto!important}}
+
+/* MODAL STYLES (Matched to new theme) */
+.modal {
+    display: none; position: fixed; z-index: 100; left: 0; top: 0;
+    width: 100%; height: 100%; background-color: rgba(20, 37, 26, 0.6);
+    backdrop-filter: blur(8px);
+}
+.modal-content {
+    background: var(--cream);
+    margin: 8vh auto; padding: 35px; border-radius: 28px;
+    width: min(550px, 92vw); text-align: left; position: relative;
+    border: 1px solid rgba(255,255,255,0.9);
+    box-shadow: 0 30px 90px rgba(34,65,42,0.25);
+}
+.close-btn {
+    position: absolute; right: 25px; top: 20px; font-size: 32px;
+    cursor: pointer; color: var(--muted); transition: 0.2s;
+}
+.close-btn:hover { color: var(--dark); }
+.form-group { margin-bottom: 18px; }
+.form-group label { display: block; margin-bottom: 8px; font-weight: 900; color: var(--dark); font-size: 0.95rem; }
+.form-group input {
+    width: 100%; padding: 12px 15px; border: 1px solid rgba(93,124,98,0.3);
+    border-radius: 12px; font-size: 1rem; background: white;
+    color: var(--ink); outline: none; transition: 0.3s;
+}
+.form-group input:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(93,124,98,0.1); }
+.submit-btn {
+    background: linear-gradient(135deg, #6e8d73, #355d3e);
+    color: white; padding: 14px 20px; border: none; border-radius: 999px;
+    cursor: pointer; width: 100%; font-size: 1.1rem; font-weight: 900;
+    margin-top: 15px; box-shadow: 0 10px 20px rgba(53,93,62,0.2);
+    transition: 0.3s ease;
+}
+.submit-btn:hover {
+    transform: translateY(-2px); box-shadow: 0 14px 28px rgba(53,93,62,0.3);
+}
+#result-box {
+    margin-top: 25px; padding: 20px; background: white; border-radius: 20px;
+    display: none; border: 1px solid rgba(93,124,98,0.15);
+    box-shadow: 0 10px 25px rgba(35,61,41,0.05);
+}
+</style>
+
+</head>
+
+<body>
+    <main class="container">
+        <!-- HEADER -->
+        <header class="header">
+            <h1>Plans and Results</h1>
+            <p>Moderate Fitness Plan</p>
+        </header>
+
+        <!-- OPTIONS -->
+        <section class="options">
+            <!-- DAILY NUTRITION -->
+            <button class="option" onclick="openModal()">
+                <div class="icon">🥗</div>
+                <h2>Daily Nutrition</h2>
+                <p>View your recommended daily nutrition plan.</p>
+            </button>
+
+            <!-- WORKOUT -->
+            <button class="option">
+                <div class="icon">🏃</div>
+                <h2>Today's Workout Plan</h2>
+                <p>Follow today's exercises and build your strength.</p>
+            </button>
+
+            <!-- SLEEP HEALTH (UPDATED) -->
+            <button class="option" onclick="window.location.href='sleep_health.html'">
+                <div class="icon">😴</div>
+                <h2>Sleep Health & Lifestyle</h2>
+                <p>Calculate your rest quality based on your daily habits and lifestyle.</p>
+            </button>
+        </section>
+
+        <!-- BACK -->
+        <a href="index.html" class="back">← Back to Home</a>
+
+        <!-- NUTRITION MODAL -->
+        <div id="nutritionModal" class="modal">
+            <div class="modal-content">
+                <span class="close-btn" onclick="closeModal()">&times;</span>
+                <h2 style="margin-bottom: 25px; font-size: 1.8rem; font-weight: 900; color: var(--dark);">Calculate Nutrition</h2>
+                
+                <form id="nutritionForm">
+                    <div class="form-group">
+                        <label for="breakfast">Breakfast Dish & Quantity:</label>
+                        <div style="display: flex; gap: 10px;">
+                            <input type="text" id="breakfast" placeholder="e.g. Poha" required style="flex: 3;">
+                            <input type="number" id="breakfast_qty" value="1" min="0.5" step="0.5" required style="flex: 1;" title="Number of servings/items">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="lunch">Lunch Dish & Quantity:</label>
+                        <div style="display: flex; gap: 10px;">
+                            <input type="text" id="lunch" placeholder="e.g. Roti, Dal" required style="flex: 3;">
+                            <input type="number" id="lunch_qty" value="1" min="0.5" step="0.5" required style="flex: 1;" title="Number of servings/items (e.g. 3 for 3 rotis)">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dinner">Dinner Dish & Quantity:</label>
+                        <div style="display: flex; gap: 10px;">
+                            <input type="text" id="dinner" placeholder="e.g. Bhakri, Paneer" required style="flex: 3;">
+                            <input type="number" id="dinner_qty" value="1" min="0.5" step="0.5" required style="flex: 1;" title="Number of servings/items">
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">Calculate Macros</button>
+                </form>
+
+                <div id="result-box"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- JAVASCRIPT FOR API CALL -->
+    <script>
+        const modal = document.getElementById("nutritionModal");
+        
+        function openModal() {
+            modal.style.display = "block";
+            document.getElementById("result-box").style.display = "none";
+        }
+
+        function closeModal() {
+            modal.style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+
+        document.getElementById("nutritionForm").addEventListener("submit", async function(e) {
+            e.preventDefault(); 
+            
+            const resultBox = document.getElementById("result-box");
+            resultBox.style.display = "block";
+            resultBox.innerHTML = "<p style='color: var(--muted); font-weight: bold;'>Analyzing dishes with ML model...</p>";
+
+            const payload = {
+                breakfast: document.getElementById("breakfast").value,
+                breakfast_qty: document.getElementById("breakfast_qty").value,
+                lunch: document.getElementById("lunch").value,
+                lunch_qty: document.getElementById("lunch_qty").value,
+                dinner: document.getElementById("dinner").value,
+                dinner_qty: document.getElementById("dinner_qty").value
+            };
+
+            try {
+                const response = await fetch("/calculate", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    let html = `<h3 style="margin-bottom:15px; border-bottom: 2px solid var(--lime); padding-bottom: 8px; color: var(--dark); font-weight: 900;">Total Daily Nutrition</h3>`;
+                    
+                    // Create a grid to display ALL nutrients dynamically
+                    html += `<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-size: 0.95rem; margin-bottom: 20px; color: var(--ink);">`;
+                    for (const [nutrient, value] of Object.entries(data.nutrition)) {
+                        html += `<div style="background: rgba(155,191,114,0.1); padding: 8px 12px; border-radius: 8px;"><strong>${nutrient}:</strong> ${value}</div>`;
+                    }
+                    html += `</div>`;
+                    
+                    // Show matched dishes and their quantities
+                    let matches = data.dishes.map(d => `${d.dish} (x${d.qty})`).join(', ');
+                    html += `<p style="margin-top:10px; font-size: 0.9em; color: var(--dark); background: rgba(93,124,98,0.08); padding: 12px; border-radius: 10px; border: 1px solid rgba(93,124,98,0.15);"><strong>Matched:</strong> ${matches}</p>`;
+                    
+                    resultBox.innerHTML = html;
+                } else {
+                    resultBox.innerHTML = `<p style="color: #d9534f; font-weight: bold;"><strong>Error:</strong><br>${data.errors.join('<br>')}</p>`;
+                }
+
+            } catch (error) {
+                resultBox.innerHTML = `<p style="color: #d9534f; font-weight: bold;">Error connecting to the server.</p>`;
+                console.error(error);
+            }
+        });
+    </script>
+</body>
+</html>

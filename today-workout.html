@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FitPro - Today's Workout Plan</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--ink:#14251a;--muted:#65756b;--green:#5d7c62;--dark:#294b32;--lime:#9bbf72;--glass:rgba(255,255,255,.84)}
+body{min-height:100vh;font-family:"Trebuchet MS","Segoe UI",sans-serif;color:var(--ink);padding:22px 14px;overflow-x:hidden;background:radial-gradient(circle at 15% 18%,rgba(155,191,114,.25),transparent 20%),radial-gradient(circle at 87% 22%,rgba(93,124,98,.20),transparent 23%),radial-gradient(circle at 70% 95%,rgba(155,191,114,.15),transparent 25%),linear-gradient(135deg,#fbfdf9,#e9f2ea)}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.32;z-index:-1;background-image:radial-gradient(rgba(41,75,50,.12) 1px,transparent 1px);background-size:24px 24px}
+.container{width:min(1160px,95vw);min-height:calc(100vh - 44px);margin:auto;padding:clamp(28px,5vw,66px);position:relative;overflow:hidden;border-radius:38px;background:var(--glass);border:1px solid rgba(255,255,255,.95);box-shadow:0 30px 90px rgba(34,65,42,.16);backdrop-filter:blur(18px)}
+.container:before{content:"";position:absolute;width:330px;height:330px;border-radius:50%;right:-190px;top:-180px;border:65px solid rgba(93,124,98,.06);box-shadow:0 0 0 35px rgba(155,191,114,.045);pointer-events:none}
+.container:after{content:"FIT • MOVE • GROW";position:absolute;left:-35px;bottom:35px;font-size:11px;letter-spacing:.35em;font-weight:900;color:rgba(41,75,50,.07);transform:rotate(-90deg);pointer-events:none}
+.header{position:relative;text-align:center;z-index:2}
+.eyebrow{display:inline-flex;align-items:center;gap:9px;padding:10px 18px;margin-bottom:20px;border-radius:999px;background:linear-gradient(135deg,rgba(93,124,98,.13),rgba(155,191,114,.14));border:1px solid rgba(93,124,98,.18);color:var(--dark);font-size:.70rem;letter-spacing:.22em;font-weight:900;text-transform:uppercase}
+.eyebrow:before,.eyebrow:after{content:"✦";font-size:.7rem}
+h1{font-size:clamp(2.5rem,7vw,5.2rem);line-height:.98;letter-spacing:-.065em;font-weight:900;margin-bottom:15px;background:linear-gradient(100deg,#17341f,#5d7c62 48%,#2f5638);-webkit-background-clip:text;background-clip:text;color:transparent}
+.subtitle{color:var(--muted);font-size:1.05rem;line-height:1.5}
+.form-card{position:relative;z-index:2;max-width:860px;margin:42px auto 24px;padding:28px;border-radius:30px;background:rgba(255,255,255,.82);border:1px solid rgba(93,124,98,.15);box-shadow:0 16px 38px rgba(35,61,41,.08)}
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.field{text-align:left}
+.field.full{grid-column:1/-1}
+label{display:block;color:var(--dark);font-weight:900;margin-bottom:8px;font-size:.92rem}
+input,select{width:100%;padding:15px 16px;border-radius:16px;border:1px solid rgba(93,124,98,.24);background:#fff;color:var(--ink);font:inherit;outline:none}
+input:focus,select:focus{border-color:#5d7c62;box-shadow:0 0 0 4px rgba(93,124,98,.12)}
+.predict{width:100%;margin-top:20px;padding:16px 22px;border:0;border-radius:18px;color:#fff;font-size:1rem;font-weight:900;cursor:pointer;background:linear-gradient(135deg,#6e8d73,#355d3e);box-shadow:0 14px 28px rgba(53,93,62,.22);transition:.25s ease}
+.predict:hover{transform:translateY(-3px)}
+.error{display:none;margin-top:14px;padding:12px 14px;border-radius:14px;background:#fff2f0;color:#8a3f38;border:1px solid #f0c9c4;font-weight:700;text-align:center}
+.results{display:none;position:relative;z-index:2}
+.results.show{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;margin-top:22px}
+.card{min-height:170px;padding:24px 18px;border-radius:25px;text-align:center;background:linear-gradient(145deg,rgba(255,255,255,.98),rgba(246,250,246,.84));border:1px solid rgba(93,124,98,.15);box-shadow:0 14px 35px rgba(35,61,41,.08);position:relative;overflow:hidden;transition:.3s ease}
+.card:hover{transform:translateY(-7px);box-shadow:0 23px 45px rgba(35,61,41,.13)}
+.card:before{content:"";position:absolute;width:120px;height:120px;border-radius:50%;right:-70px;top:-70px;background:rgba(155,191,114,.12)}
+.card-icon{font-size:2rem;margin-bottom:12px;position:relative}
+.card h3{font-size:.82rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:9px;position:relative}
+.value{font-size:1.7rem;font-weight:900;color:var(--dark);position:relative}
+.output{font-size:1.35rem}
+.details{display:none;position:relative;z-index:2;text-align:center;margin:20px auto 0;color:var(--muted);font-size:.88rem}
+.details.show{display:block}
+.back{display:inline-flex;align-items:center;gap:8px;margin-top:36px;padding:14px 27px;border-radius:999px;text-decoration:none;color:white;font-weight:900;background:linear-gradient(135deg,#6e8d73,#355d3e);box-shadow:0 13px 28px rgba(53,93,62,.25);transition:.25s ease;position:relative;z-index:3}
+.back:hover{transform:translateY(-4px)}
+@media(max-width:850px){.results.show{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){body{padding:10px}.container{width:97vw;min-height:calc(100vh - 20px);padding:32px 17px;border-radius:28px}.form-card{padding:20px}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.results.show{grid-template-columns:1fr 1fr;gap:12px}.card{min-height:145px;padding:19px 10px}.value{font-size:1.35rem}h1{font-size:clamp(2.5rem,14vw,4rem)}}
+</style>
+</head>
+<body>
+<main class="container">
+<header class="header">
+<div class="eyebrow">Personalized Fitness Prediction</div>
+<h1>Today's Workout Plan</h1>
+<p class="subtitle">Enter your information and select your exercise type.</p>
+</header>
+
+<section class="form-card">
+<form id="workoutForm">
+<div class="form-grid">
+<div class="field"><label for="age">Age</label><input id="age" type="number" min="1" max="120" required placeholder="Enter age"></div>
+<div class="field"><label for="gender">Gender</label><select id="gender" required><option value="">Select gender</option><option value="F">Female</option><option value="M">Male</option></select></div>
+<div class="field"><label for="weight">Weight (kg)</label><input id="weight" type="number" min="1" max="300" step="0.1" required placeholder="Enter weight"></div>
+<div class="field"><label for="height">Height (cm)</label><input id="height" type="number" min="50" max="250" step="0.1" required placeholder="Enter height"></div>
+<div class="field full"><label for="exercise">Type of Exercise</label><select id="exercise" required><option value="">Select exercise type</option><option value="OTHER">Other</option><option value="RUNNING">Running</option><option value="WALKING">Walking</option></select></div>
+</div>
+<button class="predict" id="predictBtn" type="submit">Predict</button>
+<div class="error" id="error"></div>
+</form>
+</section>
+
+<section class="results" id="results">
+<article class="card"><div class="card-icon">❤️</div><h3>Heartbeat</h3><div class="value" id="heartRate">—</div></article>
+<article class="card"><div class="card-icon">🔥</div><h3>Calories Burnt</h3><div class="value" id="calories">—</div></article>
+<article class="card"><div class="card-icon">⚡</div><h3>Intensity Level</h3><div class="value" id="intensity">—</div></article>
+<article class="card"><div class="card-icon">🎯</div><h3>Output</h3><div class="value output" id="output">—</div></article>
+</section>
+<div class="details" id="details"></div>
+<a class="back" id="backLink" href="#">← Back to Plan</a>
+</main>
+
+<script>
+// Dynamic Back Link Configuration
+const params = new URLSearchParams(location.search);
+const plan = (params.get("plan") || "normal").toLowerCase();
+document.getElementById("backLink").href = plan + ".html";
+
+function fail(msg){
+ const e=document.getElementById("error"); e.textContent=msg; e.style.display="block";
+ document.getElementById("results").classList.remove("show");
+ document.getElementById("details").classList.remove("show");
+ document.getElementById("predictBtn").textContent="Predict";
+}
+
+document.getElementById("workoutForm").addEventListener("submit", async function(ev){
+ ev.preventDefault();
+ document.getElementById("error").style.display="none";
+ document.getElementById("predictBtn").textContent="Predicting...";
+
+ const age = Number(document.getElementById("age").value);
+ const gender = document.getElementById("gender").value;
+ const weight = Number(document.getElementById("weight").value);
+ const height = Number(document.getElementById("height").value);
+ const exercise = document.getElementById("exercise").value;
+
+ if(!(age>0)||!(weight>0)||!(height>0)||!gender||!exercise) return fail("Please enter all information.");
+
+ const payload = { age, gender, weight, height, exercise };
+
+ try {
+    const response = await fetch("/predict_workout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+    });
+    
+    const data = await response.json();
+    document.getElementById("predictBtn").textContent="Predict";
+    
+    if(data.success) {
+        document.getElementById("heartRate").textContent = data.heart_rate + " BPM";
+        document.getElementById("calories").textContent = data.calories + " kcal";
+        document.getElementById("intensity").textContent = data.intensity;
+        document.getElementById("output").textContent = data.output;
+        
+        document.getElementById("details").textContent = "Based on Multi-Output AI Machine Learning Predictions.";
+        document.getElementById("results").classList.add("show");
+        document.getElementById("details").classList.add("show");
+        document.getElementById("results").scrollIntoView({behavior:"smooth",block:"center"});
+    } else {
+        fail("Error: " + data.error);
+    }
+ } catch(error) {
+    fail("Error connecting to the server.");
+    console.error(error);
+ }
+});
+</script>
+</body>
+</html>
